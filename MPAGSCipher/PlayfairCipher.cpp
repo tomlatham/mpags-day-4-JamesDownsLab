@@ -22,7 +22,12 @@ void PlayfairCipher::setKey(const std::string& key) {
     key_ += alphabet_;
 
     // Make sure the key is uppercase
-    std::transform(key_.begin(), key_.end(), key_.begin(), ::toupper);
+    std::transform(
+            key_.begin(),
+            key_.end(),
+            key_.begin(),
+            ::toupper
+    );
     std::cout << "Capitalised key : " + key_ << std::endl;
 
     // Remove non-alpha characters
