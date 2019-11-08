@@ -40,6 +40,9 @@ private:
     /// The cipher key used to generate the digraph
     std::string key_{""};
 
+    /// Alphabet appended to
+    std::string alphabet_{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+
     /**
      * \brief Set the key for the cipher
      * \param key string used to generate digraph
