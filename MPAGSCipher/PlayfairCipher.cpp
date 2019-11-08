@@ -66,7 +66,19 @@ void PlayfairCipher::setKey(const std::string& key) {
     std::cout << "Repeats removed : " + key_ << std::endl;
 
     // Store the coords of each letter
+    for (size_t i{0}; i<key_.size(); i++){
+        std::pair <int, int> coord{i/5, i%5};
+        letterToCoordMap_[key_[i]] = coord;
+        coordToLetterMap_[coord] = key_[i];
+    }
 
+    // Print the maps to test the output
+    for ( auto p: letterToCoordMap_) {
+        std::cout << p.first << ": (" << p.second.first << "," << p.second.second << ")" << std::endl;
+    }
+    for ( auto p: coordToLetterMap_) {
+        std::cout << "(" << p.first.first << "," << p.first.second << ") : " << p.second << std::endl;
+    }
     // Store the playfair cipher key map
 }
 

@@ -6,6 +6,7 @@
 #define MPAGSCIPHER_PLAYFAIRCIPHER_HPP
 
 #include <string>
+#include <map>
 #include "CipherMode.hpp"
 
 
@@ -42,6 +43,13 @@ private:
 
     /// Alphabet appended to
     std::string alphabet_{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+
+    /// Key_map
+    using LetterToCoordMap = std::map<char, std::pair <int, int>>;
+    LetterToCoordMap letterToCoordMap_;
+
+    using CoordToLetterMap = std::map<std::pair <int, int>, char>;
+    CoordToLetterMap coordToLetterMap_;
 
     /**
      * \brief Set the key for the cipher
