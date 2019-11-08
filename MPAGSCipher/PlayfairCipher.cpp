@@ -31,11 +31,11 @@ void PlayfairCipher::setKey(const std::string& key) {
     std::cout << "Capitalised key : " + key_ << std::endl;
 
     // Remove non-alpha characters
-    auto iter = std::remove_if(
+    auto iterNonAlpha = std::remove_if(
             key_.begin(),
             key_.end(),
             [] (char i) {return !std::isalpha(i);});
-    key_.erase(iter, key_.end());
+    key_.erase(iterNonAlpha, key_.end());
     std::cout << "Non-alpha characters removed : " + key_ << std::endl;
 
     // Change J -> I
@@ -56,7 +56,7 @@ void PlayfairCipher::setKey(const std::string& key) {
 
     // Remove duplicated letters
     std::string encountered_characters{};
-    auto iter2 = std::remove_if(
+    auto iterDuplicated = std::remove_if(
             key_.begin(),
             key_.end(),
             [&] (char c) {
@@ -69,7 +69,7 @@ void PlayfairCipher::setKey(const std::string& key) {
                 }
             }
     );
-    key_.erase(iter2, key_.end());
+    key_.erase(iterDuplicated, key_.end());
     std::cout << "Repeats removed : " + key_ << std::endl;
 
     // Store the coords of each letter
