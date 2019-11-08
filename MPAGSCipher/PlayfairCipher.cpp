@@ -7,6 +7,8 @@
 #include "TransformChar.hpp"
 
 #include <iostream>
+#include <algorithm>
+#include <iterator>
 
 PlayfairCipher::PlayfairCipher(const std::string key) {
     setKey(key);
@@ -19,7 +21,11 @@ void PlayfairCipher::setKey(const std::string& key) {
     // Append the alphabet
     key_ += alphabet_;
 
-    // Make sure the key is uppercase and remove non-alpha characters
+    // Make sure the key is uppercase
+    std::transform(key_.begin(), key_.end(), key_.begin(), ::toupper);
+    std::cout << "Capitalised key : " + key_ << std::endl;
+
+    // Remove non-alpha characters
 
     // Change J -> I
 
