@@ -26,11 +26,28 @@ void PlayfairCipher::setKey(const std::string& key) {
     std::cout << "Capitalised key : " + key_ << std::endl;
 
     // Remove non-alpha characters
-    auto iter = std::remove_if(key_.begin(), key_.end(), [] (char i) {return !std::isalpha(i); });
+    auto iter = std::remove_if(
+            key_.begin(),
+            key_.end(),
+            [] (char i) {return !std::isalpha(i);});
     key_.erase(iter, key_.end());
     std::cout << "Non-alpha characters removed : " + key_ << std::endl;
 
     // Change J -> I
+    std::transform(
+            key_.begin(),
+            key_.end(),
+            key_.begin(),
+            [] (char i) {
+                if (i == 'J'){
+                    return 'I';
+                }
+                else {
+                    return i;
+                }
+            }
+    );
+    std::cout << "J's turned to I's : " + key_ << std::endl;
 
     // Store the coords of each letter
 
