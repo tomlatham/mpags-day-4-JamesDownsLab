@@ -43,14 +43,7 @@ void PlayfairCipher::setKey(const std::string& key) {
             key_.begin(),
             key_.end(),
             key_.begin(),
-            [] (char i) {
-                if (i == 'J'){
-                    return 'I';
-                }
-                else {
-                    return i;
-                }
-            }
+            [] (char i) { return (i == 'J') ? 'I' : i;}
     );
     std::cout << "J's turned to I's : " + key_ << std::endl;
 
