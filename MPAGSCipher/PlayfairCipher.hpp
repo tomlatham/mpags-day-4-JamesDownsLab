@@ -25,7 +25,7 @@ public:
      *
      * \param key the key to use in the cipher
      */
-    explicit PlayfairCipher(std::string key);
+    explicit PlayfairCipher(const std::string& key);
 
     /**
      * Apply the cipher to the provided text

@@ -8,9 +8,9 @@
 
 #include <iostream>
 #include <algorithm>
-#include <iterator>
 
-PlayfairCipher::PlayfairCipher(const std::string key) {
+
+PlayfairCipher::PlayfairCipher(const std::string& key) {
     setKey(key);
 }
 
