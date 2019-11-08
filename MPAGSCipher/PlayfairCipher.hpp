@@ -44,12 +44,11 @@ private:
     /// Alphabet appended to
     std::string alphabet_{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
-    /// Key_map
-    using LetterToCoordMap = std::map<char, std::pair <int, int>>;
-    LetterToCoordMap letterToCoordMap_;
+    /// Key_map, char: (column, row)
+    std::map<char, std::pair <int, int>> letterToCoordMap_;
 
-    using CoordToLetterMap = std::map<std::pair <int, int>, char>;
-    CoordToLetterMap coordToLetterMap_;
+    /// Keymap., (column, row): char
+    std::map<std::pair <int, int>, char> coordToLetterMap_;
 
     /**
      * \brief Set the key for the cipher

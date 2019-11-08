@@ -67,7 +67,7 @@ void PlayfairCipher::setKey(const std::string& key) {
 
     // Store the coords of each letter
     for (size_t i{0}; i<key_.size(); i++){
-        std::pair <int, int> coord{i/5, i%5};
+        std::pair <int, int> coord{i%5, i/5}; // x is row, y is column
         letterToCoordMap_[key_[i]] = coord;
         coordToLetterMap_[coord] = key_[i];
     }
