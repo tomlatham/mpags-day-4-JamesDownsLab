@@ -54,6 +54,24 @@ void PlayfairCipher::setKey(const std::string& key) {
     );
     std::cout << "J's turned to I's : " + key_ << std::endl;
 
+    // Remove duplicated letters
+    std::string encountered_characters{};
+    auto iter2 = std::remove_if(
+            key_.begin(),
+            key_.end(),
+            [&] (char c) {
+                if (encountered_characters.find(c) == std::string::npos){
+                    encountered_characters += c;
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+    );
+    key_.erase(iter2, key_.end());
+    std::cout << "Repeats removed : " + key_ << std::endl;
+
     // Store the coords of each letter
 
     // Store the playfair cipher key map
