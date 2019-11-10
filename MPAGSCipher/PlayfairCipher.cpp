@@ -124,14 +124,41 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText, const Ciph
     }
     std::cout << "Odd inputs are appended with a Z : " << outputText << std::endl;
 
+    std::string digraph{"AA"};
     // Loop over the input in Digraphs
+    for (size_t i{0}; i<outputText.size(); i+=2) {
+        std::copy(outputText.begin()+i, outputText.begin()+i+2, digraph.begin());
 
-    //  - Find the coords in the grid of each digraph
+        std::pair <int, int> first_coord = (*letterToCoordMap_.find(digraph[0])).second;
+        std::pair <int, int> second_coord = (*letterToCoordMap_.find(digraph[1])).second;
 
-    //  - Apply the rules to these coords to get 'new' coords
+        //  - Apply the rules to these coords to get new coords
+        if (first_coord.second == second_coord.second){
+            // same row
+            first_coord.first = (first_coord.first + 1)%5;
+            second_coord.first = (second_coord.first + 1)%5;
+        }
+        else if (first_coord.first == second_coord.first){
+            // same column
+            first_coord.second = (first_coord.second + 1)%5;
+            second_coord.second = (second_coord.second + 1)%5;
+        }
+        else {
+            // coords make opposite corners of rectangle
+            // swap the x-coordinates
+            int x1 {first_coord.first};
+            int x2 {second_coord.first};
+            first_coord.first = x2;
+            second_coord.first = x1;
+        }
+        //  - Find the letter associated with the new coords
+        char letter1 = (*coordToLetterMap_.find(first_coord)).second;
+        char letter2 = (*coordToLetterMap_.find(second_coord)).second;
 
-    //  - Find the letter associated with the new coords
-
+        digraph[0] = letter1;
+        digraph[1] = letter2;
+        outputText.replace(outputText.begin()+i, outputText.begin()+i+2, digraph);
+    }
     // Return the text
     return outputText;
 }
