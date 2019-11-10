@@ -98,8 +98,8 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText, const Ciph
                 second_coord.first = (second_coord.first + 1) % 5;
             }
             else {
-                first_coord.first = (first_coord.first - 1 + 5) % 5;
-                second_coord.first = (second_coord.first - 1 + 5) % 5;
+                first_coord.first = (first_coord.first - 1 + 5) % 5; // add 5 to prevent underflow
+                second_coord.first = (second_coord.first - 1 + 5) % 5; // add 5 to prevent underflow
             }
         }
         else if (first_coord.first == second_coord.first) {
@@ -116,17 +116,12 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText, const Ciph
         else {
             // coords make opposite corners of rectangle
             // swap the x-coordinates
-            int x1 {first_coord.first};
-            int x2 {second_coord.first};
-            first_coord.first = x2;
-            second_coord.first = x1;
+            std::swap(first_coord.first, second_coord.first);
         }
-        //  - Find the letter associated with the new coords
-        char letter1 = (*coordToLetterMap_.find(first_coord)).second;
-        char letter2 = (*coordToLetterMap_.find(second_coord)).second;
 
-        digraph[0] = letter1;
-        digraph[1] = letter2;
+        //  - Find the letter associated with the new coords
+        digraph[0] = (*coordToLetterMap_.find(first_coord)).second;
+        digraph[1] = (*coordToLetterMap_.find(second_coord)).second;
         outputText.replace(outputText.begin()+i, outputText.begin()+i+2, digraph);
     }
     // Return the text
