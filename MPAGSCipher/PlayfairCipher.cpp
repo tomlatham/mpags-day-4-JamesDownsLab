@@ -28,7 +28,6 @@ void PlayfairCipher::setKey(const std::string& key) {
             key_.begin(),
             ::toupper
     );
-    std::cout << "Capitalised key : " + key_ << std::endl;
 
     // Remove non-alpha characters
     auto iterNonAlpha = std::remove_if(
@@ -36,7 +35,6 @@ void PlayfairCipher::setKey(const std::string& key) {
             key_.end(),
             [] (char i) {return !std::isalpha(i);});
     key_.erase(iterNonAlpha, key_.end());
-    std::cout << "Non-alpha characters removed : " + key_ << std::endl;
 
     // Change J -> I
     std::transform(
@@ -45,7 +43,6 @@ void PlayfairCipher::setKey(const std::string& key) {
             key_.begin(),
             [] (char i) { return (i == 'J') ? 'I' : i;}
     );
-    std::cout << "J's turned to I's : " + key_ << std::endl;
 
     // Remove duplicated letters
     std::string encountered_characters{};
@@ -63,23 +60,13 @@ void PlayfairCipher::setKey(const std::string& key) {
             }
     );
     key_.erase(iterDuplicated, key_.end());
-    std::cout << "Repeats removed : " + key_ << std::endl;
 
-    // Store the coords of each letter
+    // Store the coords of each letter in a map
     for (size_t i{0}; i<key_.size(); i++){
         std::pair <int, int> coord{i%5, i/5}; // x is row, y is column
         letterToCoordMap_[key_[i]] = coord;
         coordToLetterMap_[coord] = key_[i];
     }
-
-    // Print the maps to test the output
-    for ( auto p: letterToCoordMap_) {
-        std::cout << p.first << ": (" << p.second.first << "," << p.second.second << ")" << std::endl;
-    }
-    for ( auto p: coordToLetterMap_) {
-        std::cout << "(" << p.first.first << "," << p.first.second << ") : " << p.second << std::endl;
-    }
-    // Store the playfair cipher key map
 }
 
 std::string PlayfairCipher::applyCipher(const std::string& inputText, const CipherMode cipherMode) const {
