@@ -85,19 +85,44 @@ void PlayfairCipher::setKey(const std::string& key) {
 std::string PlayfairCipher::applyCipher(const std::string& inputText, const CipherMode cipherMode) const {
     switch (cipherMode) {
         case CipherMode::Encrypt : {
-            return inputText + "Encrypted";
+            std::cout << "Encryption mode" << std::endl;
+            break;
         }
         case CipherMode::Decrypt : {
-            return inputText + "Decrypted";
+            std::cout << "Decryption mode" << std::endl;
+            break;
         }
     }
-    return "";
 
+
+    std::string outputText {inputText};
     // Change J -> I
+    std::transform(
+            outputText.begin(),
+            outputText.end(),
+            outputText.begin(),
+            [] (char i) { return (i == 'J') ? 'I' : i;}
+    );
+    std::cout << "J's in inputText turned to I's : "<< outputText << std::endl;
 
     // If repeated characters in a digraph add an X or Q if XX
+    for (size_t i{0}; i<outputText.size(); i+=2){
+        if (outputText[i] == outputText[i+1]){
+            if (outputText[i] == 'X'){
+                outputText.insert(i+1, "Q");
+            }
+            else {
+                outputText.insert(i+1, "X");
+            }
+        }
+    }
+    std::cout << "Repeated characters managed : " << outputText << std::endl;
 
     // if the size of the input is odd, add a trailing Z
+    if (outputText.size() % 2 != 0){
+        outputText += "Z";
+    }
+    std::cout << "Odd inputs are appended with a Z : " << outputText << std::endl;
 
     // Loop over the input in Digraphs
 
@@ -108,4 +133,5 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText, const Ciph
     //  - Find the letter associated with the new coords
 
     // Return the text
+    return outputText;
 }
