@@ -53,7 +53,7 @@ line options:
 
 ```
 $ ./mpags-cipher --help
-Usage: mpags-cipher [-i <file>] [-o <file>] [-k <key>] [--encrypt/--decrypt]
+Usage: mpags-cipher [-i <file>] [-o <file>] [-k <key>] [--encrypt/--decrypt] [-c <mode>]
 
 Encrypts/Decrypts input alphanumeric text using classical ciphers
 
@@ -75,6 +75,9 @@ Available options:
   --encrypt        Will use the cipher to encrypt the input text (default behaviour)
 
   --decrypt        Will use the cipher to decrypt the input text
+
+  -c CIPHERMODE    Specify the cipher mode
+                   Currently either 'caesar' or 'playfair'
 ```
 
 If no input file is supplied, `mpags-cipher` will wait for user input
@@ -89,7 +92,7 @@ classical ciphers, it is transliterated using the following rules:
 - Digits are translated to their English equivalent words (e.g. '0' -> "ZERO")
 - All other characters (punctuation) are discarded
 
-At present only the Caesar Cipher is supported.
+At present only the Caesar Cipher and Playfair Cipher are supported.
 
 # Source Code Layout
 Under this directory, the code and associated files are organised as
@@ -104,11 +107,14 @@ MPAGS-Code
 ├── MPAGSCipher           Subdirectory for MPAGSCipher library code
 │   ├── CaesarCipher.cpp
 │   ├── CaesarCipher.hpp
+|   ├── PlayfairCipher.cpp
+|   ├── PlayfairCipher.hpp
 │   ├── CipherMode.hpp
 │   ├── ProcessCommandLine.cpp
 │   ├── ProcessCommandLine.hpp
 │   ├── TransformChar.cpp
 │   └── TransformChar.hpp
+|
 ├── mpags-cipher.cpp
 ```
 

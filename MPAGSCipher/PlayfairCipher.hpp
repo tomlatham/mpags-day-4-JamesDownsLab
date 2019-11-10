@@ -56,6 +56,11 @@ private:
      */
     void setKey(const std::string &key);
 
+    /**
+     * \brief Implement rules to setup input text
+     * \param inputText
+     * \return string with repeated letters in digraphs fixed and Z's appended to odd length strings
+     */
     std::string setupInputText(const std::string &inputText) const;
 };
 
