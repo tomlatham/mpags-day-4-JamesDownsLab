@@ -56,6 +56,7 @@ private:
      */
     void setKey(const std::string &key);
 
+    std::string setupInputText(const std::string &inputText) const;
 };
 
 

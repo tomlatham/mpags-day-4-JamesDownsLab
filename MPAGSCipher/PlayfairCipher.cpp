@@ -83,46 +83,17 @@ void PlayfairCipher::setKey(const std::string& key) {
 }
 
 std::string PlayfairCipher::applyCipher(const std::string& inputText, const CipherMode cipherMode) const {
+    std::string outputText;
     switch (cipherMode) {
         case CipherMode::Encrypt : {
-            std::cout << "Encryption mode" << std::endl;
+            outputText = setupInputText(inputText);
             break;
         }
         case CipherMode::Decrypt : {
-            std::cout << "Decryption mode" << std::endl;
+            outputText = inputText;
             break;
         }
     }
-
-
-    std::string outputText {inputText};
-    // Change J -> I
-    std::transform(
-            outputText.begin(),
-            outputText.end(),
-            outputText.begin(),
-            [] (char i) { return (i == 'J') ? 'I' : i;}
-    );
-    std::cout << "J's in inputText turned to I's : "<< outputText << std::endl;
-
-    // If repeated characters in a digraph add an X or Q if XX
-    for (size_t i{0}; i<outputText.size(); i+=2){
-        if (outputText[i] == outputText[i+1]){
-            if (outputText[i] == 'X'){
-                outputText.insert(i+1, "Q");
-            }
-            else {
-                outputText.insert(i+1, "X");
-            }
-        }
-    }
-    std::cout << "Repeated characters managed : " << outputText << std::endl;
-
-    // if the size of the input is odd, add a trailing Z
-    if (outputText.size() % 2 != 0){
-        outputText += "Z";
-    }
-    std::cout << "Odd inputs are appended with a Z : " << outputText << std::endl;
 
     std::string digraph{"AA"};
     // Loop over the input in Digraphs
@@ -135,13 +106,25 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText, const Ciph
         //  - Apply the rules to these coords to get new coords
         if (first_coord.second == second_coord.second){
             // same row
-            first_coord.first = (first_coord.first + 1)%5;
-            second_coord.first = (second_coord.first + 1)%5;
+            if (cipherMode==CipherMode::Encrypt) {
+                first_coord.first = (first_coord.first + 1) % 5;
+                second_coord.first = (second_coord.first + 1) % 5;
+            }
+            else {
+                first_coord.first = (first_coord.first - 1 + 5) % 5;
+                second_coord.first = (second_coord.first - 1 + 5) % 5;
+            }
         }
-        else if (first_coord.first == second_coord.first){
+        else if (first_coord.first == second_coord.first) {
             // same column
-            first_coord.second = (first_coord.second + 1)%5;
-            second_coord.second = (second_coord.second + 1)%5;
+            if (cipherMode == CipherMode::Encrypt) {
+                first_coord.second = (first_coord.second + 1) % 5;
+                second_coord.second = (second_coord.second + 1) % 5;
+            }
+            else {
+                first_coord.second = (first_coord.second - 1 + 5) % 5;
+                second_coord.second = (second_coord.second -1 + 5) % 5;
+            }
         }
         else {
             // coords make opposite corners of rectangle
@@ -160,5 +143,35 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText, const Ciph
         outputText.replace(outputText.begin()+i, outputText.begin()+i+2, digraph);
     }
     // Return the text
+    return outputText;
+}
+
+std::string PlayfairCipher::setupInputText(const std::string& inputText) const {
+    std::string outputText {inputText};
+    // Change J -> I
+    std::transform(
+            outputText.begin(),
+            outputText.end(),
+            outputText.begin(),
+            [] (char i) { return (i == 'J') ? 'I' : i;}
+    );
+
+    // If repeated characters in a digraph add an X or Q if XX
+    for (size_t i{0}; i<outputText.size(); i+=2){
+        if (outputText[i] == outputText[i+1]){
+            if (outputText[i] == 'X'){
+                outputText.insert(i+1, "Q");
+            }
+            else {
+                outputText.insert(i+1, "X");
+            }
+        }
+    }
+
+    // if the size of the input is odd, add a trailing Z
+    if (outputText.size() % 2 != 0){
+        outputText += "Z";
+    }
+
     return outputText;
 }
