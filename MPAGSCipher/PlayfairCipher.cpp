@@ -10,6 +10,7 @@
 #include <algorithm>
 
 
+
 PlayfairCipher::PlayfairCipher(const std::string& key) {
     setKey(key);
 }
@@ -63,8 +64,8 @@ void PlayfairCipher::setKey(const std::string& key) {
 
     // Store the coords of each letter in a map
     for (size_t i{0}; i<key_.size(); i++){
-        std::pair <int, int> coord{i%5, i/5}; // x is row, y is column
-        letterToCoordMap_[key_[i]] = coord;
+        Point coord = {i%5, i/5}; // x is row, y is column
+        letterToCoordMap_.insert(std::pair <char, Point> {key_[i], coord});
         coordToLetterMap_[coord] = key_[i];
     }
 }
@@ -87,36 +88,36 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText, const Ciph
     for (size_t i{0}; i<outputText.size(); i+=2) {
         std::copy(outputText.begin()+i, outputText.begin()+i+2, digraph.begin());
 
-        std::pair <int, int> first_coord = (*letterToCoordMap_.find(digraph[0])).second;
-        std::pair <int, int> second_coord = (*letterToCoordMap_.find(digraph[1])).second;
+        Point first_coord = (*letterToCoordMap_.find(digraph[0])).second;
+        Point second_coord = (*letterToCoordMap_.find(digraph[1])).second;
 
         //  - Apply the rules to these coords to get new coords
-        if (first_coord.second == second_coord.second){
+        if (first_coord.y == second_coord.y){
             // same row
             if (cipherMode==CipherMode::Encrypt) {
-                first_coord.first = (first_coord.first + 1) % 5;
-                second_coord.first = (second_coord.first + 1) % 5;
+                first_coord.x = (first_coord.x + 1) % 5;
+                second_coord.x = (second_coord.x + 1) % 5;
             }
             else {
-                first_coord.first = (first_coord.first - 1 + 5) % 5; // add 5 to prevent underflow
-                second_coord.first = (second_coord.first - 1 + 5) % 5; // add 5 to prevent underflow
+                first_coord.x = (first_coord.x - 1 + 5) % 5; // add 5 to prevent underflow
+                second_coord.x = (second_coord.x - 1 + 5) % 5; // add 5 to prevent underflow
             }
         }
-        else if (first_coord.first == second_coord.first) {
+        else if (first_coord.x == second_coord.x) {
             // same column
             if (cipherMode == CipherMode::Encrypt) {
-                first_coord.second = (first_coord.second + 1) % 5;
-                second_coord.second = (second_coord.second + 1) % 5;
+                first_coord.y = (first_coord.y + 1) % 5;
+                second_coord.y = (second_coord.y + 1) % 5;
             }
             else {
-                first_coord.second = (first_coord.second - 1 + 5) % 5;
-                second_coord.second = (second_coord.second -1 + 5) % 5;
+                first_coord.y = (first_coord.y - 1 + 5) % 5;
+                second_coord.y = (second_coord.y -1 + 5) % 5;
             }
         }
         else {
             // coords make opposite corners of rectangle
             // swap the x-coordinates
-            std::swap(first_coord.first, second_coord.first);
+            std::swap(first_coord.x, second_coord.x);
         }
 
         //  - Find the letter associated with the new coords

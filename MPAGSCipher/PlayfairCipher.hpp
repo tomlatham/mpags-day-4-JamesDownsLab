@@ -15,6 +15,16 @@
  * \brief Contains the declaration of the PlayfairCipher class
  */
 
+struct Point
+{
+    unsigned long x, y;
+    Point(unsigned long a, unsigned long b) { this->x = a; this->y = b; };
+
+    bool operator< (const Point& o) const {
+        return std::tie(x, y) < std::tie(o.x, o.y);
+    }
+};
+
 /**
  * \class PlayfairCipher
  * \brief Encrypt or decrypt text using the Playfair cipher with the given key
@@ -45,10 +55,10 @@ private:
     std::string alphabet_{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
     /// Key_map, char: (column, row)
-    std::map<char, std::pair <int, int>> letterToCoordMap_;
+    std::map<char, Point> letterToCoordMap_;
 
     /// Keymap., (column, row): char
-    std::map<std::pair <int, int>, char> coordToLetterMap_;
+    std::map<Point, char> coordToLetterMap_;
 
     /**
      * \brief Set the key for the cipher
@@ -63,6 +73,8 @@ private:
      */
     std::string setupInputText(const std::string &inputText) const;
 };
+
+
 
 
 #endif //MPAGSCIPHER_PLAYFAIRCIPHER_HPP
