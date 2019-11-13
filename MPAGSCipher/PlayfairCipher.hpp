@@ -21,7 +21,7 @@ struct Point
     Point(unsigned long a, unsigned long b) { this->x = a; this->y = b; };
 
     bool operator< (const Point& o) const {
-        return std::tie(x, y) < std::tie(o.x, o.y);
+        return std::make_pair(x, y) < std::make_pair(o.x, o.y);
     }
 };
 
