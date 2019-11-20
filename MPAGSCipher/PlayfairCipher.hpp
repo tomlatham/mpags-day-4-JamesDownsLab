@@ -42,13 +42,16 @@ private:
     std::string key_{""};
 
     /// Alphabet appended to
-    std::string alphabet_{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+    const std::string alphabet_{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+
+    /// Use a typedef for improved clarity
+    using PlayfairCoord = std::pair<size_t,size_t>;
 
     /// Key_map, char: (column, row)
-    std::map<char, std::pair <int, int>> letterToCoordMap_;
+    std::map<char,PlayfairCoord> letterToCoordMap_;
 
     /// Keymap., (column, row): char
-    std::map<std::pair <int, int>, char> coordToLetterMap_;
+    std::map<PlayfairCoord,char> coordToLetterMap_;
 
     /**
      * \brief Set the key for the cipher

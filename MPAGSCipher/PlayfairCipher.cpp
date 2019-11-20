@@ -63,7 +63,7 @@ void PlayfairCipher::setKey(const std::string& key) {
 
     // Store the coords of each letter in a map
     for (size_t i{0}; i<key_.size(); i++){
-        std::pair <int, int> coord{i%5, i/5}; // x is row, y is column
+        PlayfairCoord coord{i%5, i/5}; // x is row, y is column
         letterToCoordMap_[key_[i]] = coord;
         coordToLetterMap_[coord] = key_[i];
     }
@@ -87,8 +87,8 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText, const Ciph
     for (size_t i{0}; i<outputText.size(); i+=2) {
         std::copy(outputText.begin()+i, outputText.begin()+i+2, digraph.begin());
 
-        std::pair <int, int> first_coord = (*letterToCoordMap_.find(digraph[0])).second;
-        std::pair <int, int> second_coord = (*letterToCoordMap_.find(digraph[1])).second;
+        PlayfairCoord first_coord { (*letterToCoordMap_.find(digraph[0])).second };
+        PlayfairCoord second_coord { (*letterToCoordMap_.find(digraph[1])).second };
 
         //  - Apply the rules to these coords to get new coords
         if (first_coord.second == second_coord.second){
@@ -150,9 +150,9 @@ std::string PlayfairCipher::setupInputText(const std::string& inputText) const {
         }
     }
 
-    // if the size of the input is odd, add a trailing Z
+    // if the size of the input is odd, add a trailing Z (or X if last character already a Z)
     if (outputText.size() % 2 != 0){
-        outputText += "Z";
+	outputText += (outputText[outputText.size()-1] == 'Z') ? 'X' : 'Z';
     }
 
     return outputText;
